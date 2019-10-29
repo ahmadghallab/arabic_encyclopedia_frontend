@@ -1,15 +1,20 @@
 <template>
   <v-app>
-    <v-app-bar dark flat color="indigo accent-4" fixed app>
-      <v-toolbar-title class="font-weight-bold">الموسوعة العربية</v-toolbar-title>
-      <div class="flex-grow-1"></div>
+    <v-app-bar dark flat color="indigo darken-4" fixed app>
       <v-toolbar-items>
-        <v-btn text >الموضوعات</v-btn>
-        <v-btn to="/article/post" text exact>إنشاء موضوع</v-btn>
+        <v-btn icon><v-icon>mdi-menu</v-icon></v-btn>
       </v-toolbar-items>
       <div class="flex-grow-1"></div>
+      <v-toolbar-title class="font-weight-bold">
+        <nuxt-link to="/">
+        الموسوعة العربية
+        </nuxt-link>
+      </v-toolbar-title>
+      <div class="flex-grow-1"></div>
       <v-toolbar-items>
-        <v-btn text >خروج</v-btn>
+        <v-btn text>
+          <svg viewBox="0 0 515.558 515.558" width="18" fill="#fff"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"/></svg>
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <v-content>
@@ -36,6 +41,15 @@
     direction: rtl;
     font-family: 'HelveticaNeue', sans-serif !important;
   }
+  .theme--light.v-application {
+    background-color: #f3f3f3;
+  }
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    opacity: 0.9;
+  }
   .v-application--is-ltr .v-list-item__avatar:first-child {
     margin-left: 24px;
     margin-right: 0;
@@ -50,8 +64,25 @@
   .v-label {
     left: initial !important;
   }
-  .v-text-field .v-label {
-      -webkit-transform-origin: top right;
-      transform-origin: top right;
+  .v-application ul, .v-application ol {
+    padding-right: 50px;
+    padding-left: 0;
+  }
+  .v-textarea textarea, .v-application, .v-card__subtitle, .v-card__text {
+    line-height: initial;
+    font-size: 1rem;
+  }
+  .v-card__text {
+    color: #000 !important;
+  }
+  .v-toolbar__title a {
+    color: #fff !important;
+  }
+  .line-height-18 {
+    line-height: 1.8;
+  }
+  .theme--light.v-card.v-card--outlined {
+    border: 0;
+    border-radius: 10px;
   }
 </style>

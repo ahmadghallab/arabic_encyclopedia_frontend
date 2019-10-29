@@ -1,73 +1,83 @@
 <template>
-    <v-container>
-    <h3 class="my-4">إنشاء موضوع</h3>
-    <v-row>
-      <v-col
-        col="12"
-        md="6"
-      >
-        <form>
+  <v-container>
+      <h3 class="mb-3">إنشاء موضوع</h3>
+    <v-card
+      class="px-4 py-4"
+      outlined
+    >
+    <form enctype="multipart/form-data">
+      <v-row>
+        <v-col
+          md="6"
+        >
+          <v-text-field
+            placeholder="العنوان"
+            v-model="article.title"
+          ></v-text-field>
+        </v-col>
+        <v-col
+          md="2"
+        >
           <v-select
-            solo
             :items="topics"
             v-model="article.topic"
             item-text="title"
             item-value="id"
             placeholder="اختار تصنيف"
           ></v-select>
+        </v-col>
+        <v-col
+          md="2"
+        >
           <v-text-field
-            solo
-            placeholder="العنوان"
-            v-model="article.title"
-          ></v-text-field>
-          <v-textarea
-            solo
-            placeholder="المحتوي"
-            v-model="article.body"
-          ></v-textarea>
-          <v-text-field
-            solo
+          
             placeholder="كلمات مميزه"
             v-model="article.tags"
           ></v-text-field>
+        </v-col>
+        <v-col
+          md="2"
+        >
           <v-file-input
+            @change="onFileChange($event)"
+            name="file"
             accept="image/*" 
             placeholder="اختار صورة">
           </v-file-input>
-          <v-card-actions>
-            <v-btn
-              @click="postArticle"
-              large
-              color="indigo accent-4 white--text"
-              :disabled="postArticleValidator"
-            >نشر</v-btn>
-          </v-card-actions>
-        </form>
-      </v-col>
-      <v-col
-        col="12"
+        </v-col>
+        <v-col
         md="6"
-      >
-        <v-card outlined class="px-4 py-4">
-          <p class="mb-0 text-center">عرض مبدي للموضوع</p>
-        </v-card>
-      </v-col>
-      <v-snackbar
-        v-model="snackbar"
-      >
-        {{ text }}
-        <v-btn
-          color="pink"
-          text
-          @click="snackbar = false"
         >
-          الغاء
-        </v-btn>
-      </v-snackbar>
-    </v-row>
+          <v-textarea
+            placeholder="المحتوي"
+            v-model="article.body"
+          ></v-textarea>
+        </v-col>
+        <v-col
+          md="6"
+        >
+          <div v-html="compiledMarkdownBody"></div>
+        </v-col>
+      </v-row>   
+    </form>
+    </v-card>
+    <v-card-actions class="mt-4">
+      <v-btn
+        @click="postArticle"
+        text
+        color="indigo darken-4"
+        :disabled="postArticleValidator"
+      >نشر</v-btn>
+      <v-btn
+        text
+        @click="compiledMarkdown()"
+        color="indigo darken-4"
+      >عرض</v-btn>
+    </v-card-actions>
   </v-container>
 </template>
 <script>
+import snarkdown from 'snarkdown';
 
 export default {
   head () {
@@ -89,8 +99,6 @@ export default {
   data () {
     return {
       topics: [],
-      snackbar: false,
-      text: '',
       article: {
         title: '',
         tags: '',
@@ -98,8 +106,9 @@ export default {
         topic: '',
         image: '',
       },
-      valid: true,
+      compiledMarkdownBody: '',
       title: '',
+      preview: ''
     }
   },
   computed: {
@@ -108,19 +117,26 @@ export default {
     }
   },
   methods: {
-    async postArticle () {
+    compiledMarkdown () {
+      this.compiledMarkdownBody = snarkdown(this.article.body)
+    },
+    onFileChange(event) {
+      this.article.image = event
+    },
+    async postArticle() {
+      const config = {
+        headers: { "content-type": "multipart/form-data" }
+      };
+      let formData = new FormData();
+      for (let data in this.article) {
+        formData.append(data, this.article[data]);
+      }
+      
       try {
-        await this.$axios.$post('/articles', this.article)
-        this.dialog = false
-        this.snackbar = true
-        this.text = 'تم نشر الموضوع'
-        this.article.title = ''
-        this.article.tags = ''
-        this.article.body = ''
-        this.article.topic = ''
-        this.article.image = ''
+        let response = await this.$axios.$post("/articles", formData, config);
+        this.$router.push("/");
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }
   }
