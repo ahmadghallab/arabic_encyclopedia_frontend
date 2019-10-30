@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar dark flat color="indigo darken-4" fixed app>
+    <v-app-bar dark flat color="indigo accent-4" fixed app>
       <v-toolbar-items>
         <v-btn icon><v-icon>mdi-menu</v-icon></v-btn>
       </v-toolbar-items>
@@ -56,6 +56,10 @@
   }
   .v-list-item__title, .v-list-item__subtitle {
     overflow: initial;
+  }
+  .article_title {
+    font-size: 1.5rem;
+    font-weight: bold;
   }
   .v-application--is-ltr .v-divider--inset:not(.v-divider--vertical) {
     margin-right: 72px;

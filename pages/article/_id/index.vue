@@ -9,34 +9,31 @@
           class="mx-auto mb-2"
           outlined
         >
-          <v-list-item>
-            <v-list-item-content>
-              <p
-                class="grey--text font-weight-bold mb-0"
-              > 
-                صحة وتغذية
-              </p>
-              <v-list-item-title class="my-3">{{ article.title }}</v-list-item-title>
-              <v-list-item-subtitle class="mb-3">
-                بواسطة أحمد غلاب
-                - اخر تعديل {{ article.updated_at }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-img :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image"></v-img>
-          <v-card-text v-html="compiledMarkdown(article.body)"></v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-share-variant</v-icon>
-            </v-btn>
-          </v-card-actions>
+          <v-card-text>
+            <v-chip
+              class="font-weight-bold"
+              color="yellow lighten-1"
+              label
+            >
+              صحة وتغذية
+            </v-chip>
+            <h2 class="article_title">
+              {{ article.title }}
+            </h2>
+          </v-card-text>
+          <v-img v-if="article.image" 
+            :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="350px">
+          </v-img>
+          <v-divider v-else inset></v-divider>
+          <v-card-text>
+            <div v-html="compiledMarkdown(article.body)"></div>
+          </v-card-text>
         </v-card>
         <v-card-actions>
           <v-btn
-            text
+            large
             :to="`/article/${article.id}/edit`"
-            color="indigo darken-4"
+            color="indigo accent-4 white--text"
           >تعديل</v-btn>
         </v-card-actions>
       </v-col>

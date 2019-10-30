@@ -12,16 +12,15 @@
             class="mx-auto"
             outlined
           >
-            <v-img
+            <v-img v-if="article.image"
               :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image"
-              height="250px"
+              height="200px"
             ></v-img>
             <v-card-text>
               <v-chip
                 class="font-weight-bold"
                 color="yellow lighten-1"
                 label
-                text-color=""
               >
                 صحة وتغذية
               </v-chip>
