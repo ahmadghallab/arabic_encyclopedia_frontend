@@ -2,7 +2,8 @@
   <v-app>
     <v-app-bar dark flat color="indigo accent-4" fixed app>
       <v-toolbar-items>
-        <v-btn icon><v-icon>mdi-menu</v-icon></v-btn>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <!-- <v-btn icon><v-icon>mdi-menu</v-icon></v-btn> -->
       </v-toolbar-items>
       <div class="flex-grow-1"></div>
       <v-toolbar-title class="font-weight-bold">
@@ -22,8 +23,64 @@
         <nuxt />
       </v-container>
     </v-content>
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      bottom
+      temporary
+      right
+    >
+      <v-list
+        nav
+        dense
+      >
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-indigo--text text--accent-4"
+        >
+          <v-list-item>
+            <v-list-item-title>
+              <nuxt-link to="/article/post" class="font-weight-bold">
+              إنشاء موضوع
+              </nuxt-link>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-divider></v-divider>
+
+          <v-list-item v-for="topic in topics" :key="topic.id">
+            <v-list-item-title>{{ topic.title }}</v-list-item-title>
+          </v-list-item>
+
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
   </v-app>
 </template>
+<script>
+  export default {
+    async asyncData({ $axios, params }) {
+      try {
+        const topics = await $axios.$get('/topics')
+        return { topics: topics}
+      } catch (e) {
+        return {topics: [] }
+      }
+    },
+
+    data: () => ({
+      drawer: false,
+      group: null,
+      topics: [],
+    }),
+
+    watch: {
+      group () {
+        this.drawer = false
+      },
+    },
+  }
+</script>
 <style>
   @font-face {
   font-family: 'HelveticaNeue';

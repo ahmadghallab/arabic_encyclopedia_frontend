@@ -6,7 +6,7 @@
           outlined
           >
           <v-toolbar
-            color="pink lighten-1 white--text"
+            color="yellow"
             flat
           >
             <v-toolbar-title>تعديل موضوع</v-toolbar-title>
@@ -54,36 +54,32 @@
                     rows="10"
                   ></v-textarea>
                 </v-col>
-              </v-row> 
-              <v-card-actions>
-                <v-btn
-                  large
-                  color="pink lighten-1 white--text"
-                  :disabled="updateArticleValidator"
-                  @click="updateArticle"
-                >نشر</v-btn>
-                <v-btn
-                  large
-                  @click="compiledMarkdown()"
-                  color="pink lighten-1 white--text mr-2"
-                >معاينة</v-btn>
-              </v-card-actions>  
+              </v-row>  
             </form>
           </v-card-text>
         </v-card>
+        <v-card-actions class="mt-4">
+          <v-btn
+            large
+            color="indigo accent-4 white--text"
+            :disabled="updateArticleValidator"
+            @click="updateArticle"
+          >نشر</v-btn>
+          <v-btn
+            large
+            @click="compiledMarkdown()"
+            color="indigo accent-4 white--text mr-2"
+          >معاينة</v-btn>
+        </v-card-actions> 
       </v-col>
       <v-col md="6">
         <v-card outlined class="mb-4" v-if="article.image">
-          <v-img v-if="!preview"
-            :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="300px">
-          </v-img>
-          <v-img v-else
-            :src="preview" height="300px">
+          <v-img  :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="300px">
           </v-img>
           <v-card-text>
             <v-btn
-              @click="article.image = ''"
-              color="pink lighten-1 white--text"
+              @click="deleteImage"
+              color="red accent-4 white--text"
             >حذف
             </v-btn>
           </v-card-text>
@@ -136,8 +132,7 @@ export default {
         topic: '',
         image: ''
       },
-      compiledMarkdownBody: '',
-      preview: ''
+      compiledMarkdownBody: ''
     }
   },
   computed: {
@@ -146,33 +141,36 @@ export default {
     }
   },
   methods: {
+    async deleteImage () {
+      try {
+        let response = await this.$axios.$post(`/article/${this.article.id}/image`, {'action': 'delete'});
+        this.article.image = ''
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async uploadImage(event) {
+      const config = {
+        headers: { "content-type": "multipart/form-data" }
+      };
+      let formData = new FormData();
+      formData.append('image', event);
+      try {
+        let response = await this.$axios.$post(`/article/${this.article.id}/image`, formData, config);
+        this.article.image = response.image        
+      } catch (e) {
+        console.log(e);
+      }
+    },
     compiledMarkdown () {
       this.compiledMarkdownBody = snarkdown(this.article.body)
     },
     onFileChange(event) {
-      this.article.image = event
-      this.createImage(event);
+      this.uploadImage(event)
     },
-    createImage(file) {
-      let reader = new FileReader();
-      let vm = this;
-      reader.onload = e => {
-        vm.preview = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
-    async updateArticle() {
-      const config = {
-        headers: { "content-type": "multipart/form-data" }
-      };
-      
-      let formData = new FormData();
-      for (let data in this.article) {
-        formData.append(data, this.article[data]);
-      }
-      
+    async updateArticle() {      
       try {
-        let response = await this.$axios.$post(`/article/${this.article.id}`, formData, config);
+        let response = await this.$axios.$patch(`/article/${this.article.id}`, this.article);
         this.$router.push("/");
       } catch (e) {
         console.log(e);

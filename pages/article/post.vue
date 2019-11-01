@@ -1,85 +1,88 @@
 <template>
   <v-container>
-    <v-card
-      outlined
-    >
-    <v-toolbar
-      color="yellow"
-      flat
-    >
-      <v-toolbar-title>إنشاء موضوع</v-toolbar-title>
-    </v-toolbar>
-    <v-card-text>
-      <form enctype="multipart/form-data">
-        <v-row>
-          <v-col
-            md="6"
+    <v-row>
+      <v-col md="6">
+        <v-card
+          outlined
+        >
+          <v-toolbar
+            color="yellow" 
+            flat
           >
-            <v-text-field
-              placeholder="العنوان"
-              v-model="article.title"
-            ></v-text-field>
-          </v-col>
-          <v-col
-            md="2"
-          >
-            <v-select
-              :items="topics"
-              v-model="article.topic"
-              item-text="title"
-              item-value="id"
-              placeholder="اختار تصنيف"
-            ></v-select>
-          </v-col>
-          <v-col
-            md="2"
-          >
-            <v-text-field
-            
-              placeholder="كلمات مميزه"
-              v-model="article.tags"
-            ></v-text-field>
-          </v-col>
-          <v-col
-            md="2"
-          >
-            <v-file-input
-              @change="onFileChange($event)"
-              name="file"
-              accept="image/*" 
-              placeholder="اختار صورة">
-            </v-file-input>
-          </v-col>
-          <v-col
-          md="6"
-          >
-            <v-textarea
-              placeholder="المحتوي"
-              v-model="article.body"
-            ></v-textarea>
-          </v-col>
-          <v-col
-            md="6"
-          >
+            <v-toolbar-title>إنشاء موضوع</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <form>
+              <v-row>
+                <v-col
+                  class="py-0"
+                  md="12"
+                >
+                  <v-text-field
+                    placeholder="العنوان"
+                    v-model="article.title"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  class="py-0"
+                  md="4"
+                >
+                  <v-select
+                    :items="topics"
+                    v-model="article.topic"
+                    item-text="title"
+                    item-value="id"
+                    placeholder="اختار تصنيف"
+                  ></v-select>
+                </v-col>
+                <v-col
+                  class="py-0"
+                  md="8"
+                >
+                  <v-text-field
+                    placeholder="كلمات مميزه"
+                    v-model="article.tags"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  md="12"
+                  class="py-0"
+                >
+                  <v-textarea
+                    rows="10"
+                    placeholder="المحتوي"
+                    v-model="article.body"
+                  ></v-textarea>
+                </v-col>
+              </v-row> 
+              <v-card-actions>
+                <v-btn
+                  large
+                  @click="postArticle"
+                  color="indigo accent-4 white--text"
+                  :disabled="postArticleValidator"
+                >نشر</v-btn>
+                <v-btn
+                  large
+                  @click="compiledMarkdown()"
+                  color="indigo accent-4 white--text mr-2"
+                >عرض</v-btn>
+              </v-card-actions>  
+            </form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col
+        md="6"
+        >
+        <v-card outlined>
+          <v-card-text>
+            <p class="mb-0">معاينة التنسيق قبل النشر</p>
             <div v-html="compiledMarkdownBody"></div>
-          </v-col>
-        </v-row> 
-        <v-card-actions>
-          <v-btn
-            large
-            @click="postArticle"
-            color="indigo accent-4 white--text"
-            :disabled="postArticleValidator"
-          >نشر</v-btn>
-          <v-btn
-            large
-            @click="compiledMarkdown()"
-            color="indigo accent-4 white--text mr-2"
-          >عرض</v-btn>
-        </v-card-actions>  
-      </form>
-    </v-card-text>
-    </v-card>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -109,8 +112,7 @@ export default {
         title: '',
         tags: '',
         body: '',
-        topic: '',
-        image: '',
+        topic: ''
       },
       compiledMarkdownBody: '',
     }
@@ -124,20 +126,10 @@ export default {
     compiledMarkdown () {
       this.compiledMarkdownBody = snarkdown(this.article.body)
     },
-    onFileChange(event) {
-      this.article.image = event
-    },
     async postArticle() {
-      const config = {
-        headers: { "content-type": "multipart/form-data" }
-      };
-      let formData = new FormData();
-      for (let data in this.article) {
-        formData.append(data, this.article[data]);
-      }
       try {
-        let response = await this.$axios.$post("/articles", formData, config);
-        this.$router.push("/");
+        let response = await this.$axios.$post("/articles", this.article);
+        this.$router.push("/article/" + response.article_id);
       } catch (e) {
         console.log(e);
       }
