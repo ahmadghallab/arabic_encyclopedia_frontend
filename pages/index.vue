@@ -22,7 +22,7 @@
                 color="yellow lighten-1"
                 label
               >
-                صحة وتغذية
+                {{ article.topic.title }}
               </v-chip>
               <h3 class="font-weight-bold">
                 {{ article.title }}
@@ -45,7 +45,7 @@ export default {
     try {
       const articles = await $axios.$get('/articles')
       return {
-        articles: articles
+        articles: articles.data
       }
     } catch (e) {
       return { articles: [] }

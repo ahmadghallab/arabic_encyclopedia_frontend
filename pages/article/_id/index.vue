@@ -15,7 +15,7 @@
               color="yellow lighten-1"
               label
             >
-              صحة وتغذية
+              {{ article.topic.title }}
             </v-chip>
             <h2 class="article_title">
               {{ article.title }}
@@ -28,6 +28,9 @@
           <v-card-text>
             <div v-html="compiledMarkdown(article.body)"></div>
           </v-card-text>
+          <v-subheader>
+            {{'من قبل ' + article.user.first_name + ' ' + article.user.last_name + ' - ' + formatDate(article.created_at) }} 
+          </v-subheader>
         </v-card>
         <v-card-actions>
           <v-btn
@@ -70,6 +73,11 @@ export default {
     compiledMarkdown (text) {
       return snarkdown(text)
     },
+    formatDate(date) {
+      const d = new Date(date)
+      var ms = ['يناير', 'فبراير', 'مارس', 'ابريل', 'مايو', 'يونيو', 'يوليو', 'اغسطس', 'مارس', 'اكتوبر', 'نوفمبر', 'ديسمبر'];
+      return d.getDate() + ' ' + ms[d.getMonth()] + ' ' + d.getFullYear();
+    }
   }
 }
 </script>

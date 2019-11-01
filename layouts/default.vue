@@ -2,12 +2,42 @@
   <v-app>
     <v-app-bar dark flat color="indigo accent-4" fixed app>
       <v-toolbar-items>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <!-- <v-btn icon><v-icon>mdi-menu</v-icon></v-btn> -->
+        <v-menu
+          transition="slide-y-transition"
+          bottom
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              text
+              dark
+              v-on="on"
+              class="font-weight-bold"
+            >
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="topic in topics"
+              :key="topic.id"
+              :to="'/topic/'+topic.id"
+            >
+              <v-list-item-title>{{ topic.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-list>
+            <v-list-item :to="'/article/post'">
+              <v-list-item-title>إنشاء مقال</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>خروج</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-toolbar-items>
       <div class="flex-grow-1"></div>
-      <v-toolbar-title class="font-weight-bold">
-        <nuxt-link to="/">
+      <v-toolbar-title>
+        <nuxt-link to="/" class="font-weight-bold text-top">
         الموسوعة العربية
         </nuxt-link>
       </v-toolbar-title>
@@ -23,51 +53,10 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      bottom
-      temporary
-      right
-    >
-      <v-list
-        nav
-        dense
-      >
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-indigo--text text--accent-4"
-        >
-          <v-list-item>
-            <v-list-item-title>
-              <nuxt-link to="/article/post" class="font-weight-bold">
-              إنشاء موضوع
-              </nuxt-link>
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-divider></v-divider>
-
-          <v-list-item v-for="topic in topics" :key="topic.id">
-            <v-list-item-title>{{ topic.title }}</v-list-item-title>
-          </v-list-item>
-
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
   </v-app>
 </template>
 <script>
   export default {
-    async asyncData({ $axios, params }) {
-      try {
-        const topics = await $axios.$get('/topics')
-        return { topics: topics}
-      } catch (e) {
-        return {topics: [] }
-      }
-    },
-
     data: () => ({
       drawer: false,
       group: null,
@@ -79,6 +68,21 @@
         this.drawer = false
       },
     },
+
+    methods: {
+      async listTopics() {
+        try {
+          const topics = await this.$axios.$get('/topics')
+          this.topics = topics
+        } catch (e) {
+          this.topics = []
+        }
+      },
+    },
+
+    created() {
+      this.listTopics()
+    }
   }
 </script>
 <style>
@@ -145,5 +149,8 @@
   .theme--light.v-card.v-card--outlined {
     border: 0;
     border-radius: 10px;
+  }
+  .text-top {
+    vertical-align: text-top;
   }
 </style>
