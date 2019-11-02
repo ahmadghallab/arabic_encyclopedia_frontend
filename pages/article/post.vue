@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-row>
-      <v-col md="6">
+      <v-col md="7">
         <v-card
           outlined
         >
           <v-toolbar
-            color="yellow" 
+            color="indigo accent-4 white--text" 
             flat
           >
             <v-toolbar-title>إنشاء موضوع</v-toolbar-title>
@@ -16,7 +16,7 @@
               <v-row>
                 <v-col
                   class="py-0"
-                  md="12"
+                  md="8"
                 >
                   <v-text-field
                     placeholder="العنوان"
@@ -34,15 +34,6 @@
                     item-value="id"
                     placeholder="اختار تصنيف"
                   ></v-select>
-                </v-col>
-                <v-col
-                  class="py-0"
-                  md="8"
-                >
-                  <v-text-field
-                    placeholder="كلمات مميزه"
-                    v-model="article.tags"
-                  ></v-text-field>
                 </v-col>
                 <v-col
                   md="12"
@@ -73,7 +64,7 @@
         </v-card>
       </v-col>
       <v-col
-        md="6"
+        md="5"
         >
         <v-card outlined>
           <v-card-text>

@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-row>
-      <v-col md="6">
+      <v-col md="7">
         <v-card
           outlined
           >
           <v-toolbar
-            color="yellow"
+            color="indigo accent-4 white--text"
             flat
           >
             <v-toolbar-title>تعديل موضوع</v-toolbar-title>
@@ -16,7 +16,7 @@
               <v-row>
                 <v-col
                   class="py-0"
-                  md="12"
+                  md="8"
                 >
                   <v-text-field
                     placeholder="العنوان"
@@ -34,15 +34,6 @@
                     item-value="id"
                     placeholder="اختار تصنيف"
                   ></v-select>
-                </v-col>
-                <v-col
-                  class="py-0"
-                  md="8"
-                >
-                  <v-text-field
-                    placeholder="كلمات مميزه"
-                    v-model="article.tags"
-                  ></v-text-field>
                 </v-col>
                 <v-col
                   class="py-0"
@@ -72,14 +63,14 @@
           >معاينة</v-btn>
         </v-card-actions> 
       </v-col>
-      <v-col md="6">
+      <v-col md="5">
         <v-card outlined class="mb-4" v-if="article.image">
-          <v-img  :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="300px">
+          <v-img  :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="180px">
           </v-img>
           <v-card-text>
             <v-btn
               @click="deleteImage"
-              color="red accent-4 white--text"
+              color="pink accent-4 white--text"
             >حذف
             </v-btn>
           </v-card-text>
@@ -116,7 +107,7 @@ export default {
     try {
       const article = await $axios.$get(`/article/${params.id}`)
       const topics = await $axios.$get('/topics')
-      return { article: article,  topics: topics}
+      return { article: article.article,  topics: topics}
     } catch (e) {
       return { article: [], topics: [] }
     }

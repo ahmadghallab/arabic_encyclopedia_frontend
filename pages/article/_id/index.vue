@@ -3,7 +3,7 @@
     <v-row>
       <v-col
         cols="12"
-        md="8"
+        sm="8"
         >
         <v-card
           class="mx-auto mb-2"
@@ -40,6 +40,26 @@
           >تعديل</v-btn>
         </v-card-actions>
       </v-col>
+      <v-col sm="4">
+        <nuxt-link
+          v-for="article in relatedArticles" :key="'relatedArticle_'+article.id" 
+          :to="`/article/${article.id}`">
+          <v-card
+            class="mx-auto mb-4"
+            outlined
+          >
+            <v-img v-if="article.image"
+              :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image"
+              height="150px"
+            ></v-img>
+            <v-card-text>
+              <h4 class="font-weight-bold">
+                {{ article.title }}
+              </h4>
+            </v-card-text>
+          </v-card>
+        </nuxt-link>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -55,7 +75,7 @@ export default {
   async asyncData({ $axios, params }) {
     try {
       const article = await $axios.$get(`/article/${params.id}`)
-      return { article }
+      return { article: article.article, relatedArticles: article.related_articles }
     } catch (e) {
       return { article: [] }
     }
@@ -66,7 +86,8 @@ export default {
         title: '',
         body: '',
         image: ''
-      }
+      },
+      relatedArticles: []
     }
   },
   methods: {

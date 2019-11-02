@@ -6,6 +6,7 @@
         :key="index"
         cols="12"
         md="4"
+        sm="6"
         >
         <nuxt-link :to="`/article/${article.id}`">
           <v-card
@@ -14,7 +15,7 @@
           >
             <v-img v-if="article.image"
               :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image"
-              height="200px"
+              height="180px"
             ></v-img>
             <v-card-text>
               <v-chip
@@ -24,9 +25,9 @@
               >
                 {{ article.topic.title }}
               </v-chip>
-              <h3 class="font-weight-bold">
+              <h4 class="font-weight-bold">
                 {{ article.title }}
-              </h3>
+              </h4>
             </v-card-text>
           </v-card>
         </nuxt-link>
@@ -53,7 +54,7 @@ export default {
   },
   data () {
     return {
-      articles: [],
+      articles: []
     }
   },
 }

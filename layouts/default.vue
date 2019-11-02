@@ -7,14 +7,7 @@
           bottom
         >
           <template v-slot:activator="{ on }">
-            <v-btn
-              text
-              dark
-              v-on="on"
-              class="font-weight-bold"
-            >
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
+            <v-app-bar-nav-icon v-on="on"></v-app-bar-nav-icon>
           </template>
           <v-list>
             <v-list-item
@@ -25,20 +18,12 @@
               <v-list-item-title>{{ topic.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
-          <v-list>
-            <v-list-item :to="'/article/post'">
-              <v-list-item-title>إنشاء مقال</v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>خروج</v-list-item-title>
-            </v-list-item>
-          </v-list>
         </v-menu>
       </v-toolbar-items>
       <div class="flex-grow-1"></div>
       <v-toolbar-title>
         <nuxt-link to="/" class="font-weight-bold text-top">
-        الموسوعة العربية
+          {{ logo }}
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
@@ -53,11 +38,35 @@
         <nuxt />
       </v-container>
     </v-content>
+    <v-footer 
+      padless
+      color="white"
+      class="py-2"
+    >
+      <v-container>
+        <v-row>
+          <v-col
+            md="auto"
+          >
+            <v-subheader>
+              المواد الطبية المنشورة في الموقع هي بمثابة معلومات فقط ولا يجوز اعتبارها استشارة طبية أو توصية علاجية
+              <br />
+              حقوق الطبع محفوظة {{ logo }} - {{ new Date().getFullYear() }}
+            </v-subheader>
+          </v-col>
+          <v-col class="text-left">
+            <v-btn large color="indigo accent-4 white--text" to="/article/post">مقال جديد</v-btn>
+            <v-btn text large depressed>خروج</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-footer>
   </v-app>
 </template>
 <script>
   export default {
     data: () => ({
+      logo: 'الموسوعة العربية',
       drawer: false,
       group: null,
       topics: [],
@@ -126,16 +135,13 @@
     margin-right: 72px;
     margin-left: 0;
   }
-  .v-label {
-    left: initial !important;
-  }
   .v-application ul, .v-application ol {
     padding-right: 50px;
     padding-left: 0;
   }
   .v-textarea textarea, .v-application, .v-card__subtitle, .v-card__text {
     line-height: initial;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
   .v-card__text {
     color: #000 !important;
@@ -152,5 +158,10 @@
   }
   .text-top {
     vertical-align: text-top;
+  }
+  .v-input .v-label {
+    line-height: 1;
+    left: initial !important;
+    right: 0;
   }
 </style>
