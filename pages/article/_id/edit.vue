@@ -6,7 +6,7 @@
           outlined
           >
           <v-toolbar
-            color="indigo accent-4 white--text"
+            color="green lighten-1 white--text"
             flat
           >
             <v-toolbar-title>تعديل موضوع</v-toolbar-title>
@@ -16,7 +16,7 @@
               <v-row>
                 <v-col
                   class="py-0"
-                  md="8"
+                  md="6"
                 >
                   <v-text-field
                     placeholder="العنوان"
@@ -25,14 +25,23 @@
                 </v-col>
                 <v-col
                   class="py-0"
-                  md="4"
+                  md="3"
+                >
+                  <v-text-field
+                    placeholder="كلمات مميزة"
+                    v-model="article.tags"
+                  ></v-text-field>
+                </v-col>
+                <v-col
+                  class="py-0"
+                  md="3"
                 >
                   <v-select
                     :items="topics"
                     v-model="article.topic"
                     item-text="title"
                     item-value="id"
-                    placeholder="اختار تصنيف"
+                    placeholder="الموضوعات"
                   ></v-select>
                 </v-col>
                 <v-col
@@ -52,14 +61,14 @@
         <v-card-actions class="mt-4">
           <v-btn
             large
-            color="indigo accent-4 white--text"
+            color="green darken-1 white--text"
             :disabled="updateArticleValidator"
             @click="updateArticle"
           >نشر</v-btn>
           <v-btn
             large
             @click="compiledMarkdown()"
-            color="indigo accent-4 white--text mr-2"
+            color="green darken-1 white--text mr-2"
           >معاينة</v-btn>
         </v-card-actions> 
       </v-col>
@@ -70,7 +79,7 @@
           <v-card-text>
             <v-btn
               @click="deleteImage"
-              color="pink accent-4 white--text"
+              color="green darken-1 white--text"
             >حذف
             </v-btn>
           </v-card-text>

@@ -12,7 +12,8 @@
           <v-card-text>
             <v-chip
               class="font-weight-bold"
-              color="yellow lighten-1"
+              color="green lighten-5"
+              text-color="green darken-4"
               label
             >
               {{ article.topic.title }}
@@ -36,7 +37,7 @@
           <v-btn
             large
             :to="`/article/${article.id}/edit`"
-            color="indigo accent-4 white--text"
+            color="green darken-1 white--text"
           >تعديل</v-btn>
         </v-card-actions>
       </v-col>

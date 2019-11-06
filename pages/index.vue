@@ -20,7 +20,8 @@
             <v-card-text>
               <v-chip
                 class="font-weight-bold"
-                color="yellow lighten-1"
+                color="green lighten-5"
+                text-color="green darken-4"
                 label
               >
                 {{ article.topic.title }}
@@ -45,16 +46,19 @@ export default {
   async asyncData ({$axios, params}) {
     try {
       const articles = await $axios.$get('/articles')
+      const topics = await $axios.$get('/topics')
       return {
-        articles: articles.data
+        articles: articles.data,
+        topics: topics
       }
     } catch (e) {
-      return { articles: [] }
+      return { articles: [], topics: [] }
     }
   },
   data () {
     return {
-      articles: []
+      articles: [],
+      topics: []
     }
   },
 }

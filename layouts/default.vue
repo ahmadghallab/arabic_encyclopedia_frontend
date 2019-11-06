@@ -1,25 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar dark flat color="indigo accent-4" fixed app>
-      <v-toolbar-items>
-        <v-menu
-          transition="slide-y-transition"
-          bottom
-        >
-          <template v-slot:activator="{ on }">
-            <v-app-bar-nav-icon v-on="on"></v-app-bar-nav-icon>
-          </template>
-          <v-list>
-            <v-list-item
-              v-for="topic in topics"
-              :key="topic.id"
-              :to="'/topic/'+topic.id"
-            >
-              <v-list-item-title>{{ topic.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-toolbar-items>
+    <v-app-bar light flat color="deep-purple accent-4" app>
       <div class="flex-grow-1"></div>
       <v-toolbar-title>
         <nuxt-link to="/" class="font-weight-bold text-top">
@@ -27,11 +8,6 @@
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
-      <v-toolbar-items>
-        <v-btn text>
-          <svg viewBox="0 0 515.558 515.558" width="18" fill="#fff"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"/></svg>
-        </v-btn>
-      </v-toolbar-items>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -55,8 +31,23 @@
             </v-subheader>
           </v-col>
           <v-col class="text-left">
-            <v-btn large color="indigo accent-4 white--text" to="/article/post">مقال جديد</v-btn>
-            <v-btn text large depressed>خروج</v-btn>
+            <span v-if="isAuthenticated">
+              <v-btn 
+                large depressed
+                color="deep-purple accent-4 white--text"
+                to="/article/post">مقال جديد
+              </v-btn>
+              <v-btn large depressed 
+                color="green lighten-3 white--text mr-2" @click="logout">خروج
+              </v-btn>
+            </span>
+            <span v-else>
+              <v-btn 
+                large depressed
+                color="deep-purple accent-4 white--text"
+                to="/user/signin">دخول
+              </v-btn>
+            </span>
           </v-col>
         </v-row>
       </v-container>
@@ -64,35 +55,25 @@
   </v-app>
 </template>
 <script>
-  export default {
-    data: () => ({
-      logo: 'الموسوعة العربية',
-      drawer: false,
-      group: null,
-      topics: [],
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  data: () => ({
+    logo: 'نبــاتي'
+  }),
+  computed: {
+    ...mapGetters(['isAuthenticated'])
+  },
+  methods: {
+    ...mapActions({
+      logout: 'logout'
     }),
-
-    watch: {
-      group () {
-        this.drawer = false
-      },
+    logout () { 
+      this.$store.dispatch('logout').then(() => { 
+        this.$router.push('/')
+      })
     },
-
-    methods: {
-      async listTopics() {
-        try {
-          const topics = await this.$axios.$get('/topics')
-          this.topics = topics
-        } catch (e) {
-          this.topics = []
-        }
-      },
-    },
-
-    created() {
-      this.listTopics()
-    }
   }
+}
 </script>
 <style>
   @font-face {
@@ -163,5 +144,12 @@
     line-height: 1;
     left: initial !important;
     right: 0;
+  }
+  .v-application .primary--text {
+    color: #66BB6A !important;
+    caret-color: #66BB6A !important;
+  }
+  .v-text-field input {
+    line-height: initial;
   }
 </style>
