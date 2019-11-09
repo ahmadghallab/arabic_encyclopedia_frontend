@@ -5,7 +5,7 @@
         v-for="(article, index) in articles"
         :key="index"
         cols="12"
-        md="4"
+        md="3"
         sm="6"
         >
         <nuxt-link :to="`/article/${article.id}`">
@@ -15,17 +15,17 @@
           >
             <v-img v-if="article.image"
               :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image"
-              height="180px"
+              height="130px"
             ></v-img>
             <v-card-text>
-              <v-chip
+              <!-- <v-chip
                 class="font-weight-bold"
-                color="green lighten-5"
-                text-color="green darken-4"
+                color="deep-purple lighten-5"
+                text-color="deep-purple darken-4"
                 label
               >
                 {{ article.topic.title }}
-              </v-chip>
+              </v-chip> -->
               <h4 class="font-weight-bold">
                 {{ article.title }}
               </h4>

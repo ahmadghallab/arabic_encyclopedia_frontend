@@ -5,12 +5,6 @@
         <v-card
           outlined
         >
-          <v-toolbar
-            color="green lighten-1 white--text"
-            flat
-          >
-            <v-toolbar-title>إنشاء موضوع</v-toolbar-title>
-          </v-toolbar>
           <v-card-text>
             <form>
               <v-row>
@@ -49,28 +43,26 @@
                   class="py-0"
                 >
                   <v-textarea
-                    rows="8"
                     placeholder="المحتوي"
                     v-model="article.body"
                   ></v-textarea>
                 </v-col>
               </v-row> 
-              <v-card-actions>
-                <v-btn
-                  large
-                  @click="postArticle"
-                  color="green darken-1 white--text"
-                  :disabled="postArticleValidator"
-                >نشر</v-btn>
-                <v-btn
-                  large
-                  @click="compiledMarkdown()"
-                  color="green darken-1 white--text mr-2"
-                >عرض</v-btn>
-              </v-card-actions>  
             </form>
           </v-card-text>
         </v-card>
+        <v-card-actions class="mt-4">
+          <v-btn
+            @click="postArticle"
+            large depressed
+            :disabled="postArticleValidator"
+          >نشر</v-btn>
+          <v-btn
+            @click="compiledMarkdown()"
+            large depressed
+            class="mr-2"
+          >عرض</v-btn>
+        </v-card-actions>  
       </v-col>
       <v-col
         md="5"

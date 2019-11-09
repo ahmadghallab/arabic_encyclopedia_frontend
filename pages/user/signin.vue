@@ -2,15 +2,14 @@
   <v-container>
     <v-row justify="center">
       <v-col md="4">
+        <v-alert v-if="userNotLoggedIn" border="left"
+          color="pink darken-1"
+          dark>
+          بيانات الدخول غير صحيحة
+        </v-alert>
         <v-card
           outlined
         >
-          <v-toolbar
-            color="green lighten-3 white--text"
-            flat
-          >
-            <v-toolbar-title>تستجيل دخول</v-toolbar-title>
-          </v-toolbar>
           <v-card-text>
             <form v-on:submit.prevent="signin()">
               <v-row>

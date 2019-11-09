@@ -1,4 +1,3 @@
-
 export const state = () => ({
   isAuthenticated: false
 })
@@ -47,9 +46,3 @@ export const actions = {
     })
   }
 }
-// if (typeof window !== 'undefined') {
-//   let token = localStorage.getItem('token')  
-//   if (token) {
-//     state.isAuthenticated = true
-//   }
-// }

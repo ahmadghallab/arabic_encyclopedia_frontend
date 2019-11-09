@@ -11,16 +11,13 @@
         >
           <v-card-text>
             <v-chip
-              class="font-weight-bold"
-              color="green lighten-5"
-              text-color="green darken-4"
-              label
+              
             >
               {{ article.topic.title }}
             </v-chip>
-            <h2 class="article_title">
+            <h3 class="article_title">
               {{ article.title }}
-            </h2>
+            </h3>
           </v-card-text>
           <v-img v-if="article.image" 
             :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="350px">
@@ -33,11 +30,10 @@
             {{'من قبل ' + article.user.first_name + ' ' + article.user.last_name + ' - ' + formatDate(article.created_at) }} 
           </v-subheader>
         </v-card>
-        <v-card-actions>
+        <v-card-actions v-if="isAuthenticated">
           <v-btn
-            large
+            depressed large
             :to="`/article/${article.id}/edit`"
-            color="green darken-1 white--text"
           >تعديل</v-btn>
         </v-card-actions>
       </v-col>
@@ -66,6 +62,7 @@
 </template>
 <script>
 import snarkdown from 'snarkdown';
+import { mapGetters } from 'vuex'
 
 export default {
   head () {
@@ -90,6 +87,9 @@ export default {
       },
       relatedArticles: []
     }
+  },
+  computed: {
+    ...mapGetters(['isAuthenticated'])
   },
   methods: {
     compiledMarkdown (text) {

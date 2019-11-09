@@ -5,12 +5,6 @@
         <v-card
           outlined
           >
-          <v-toolbar
-            color="green lighten-1 white--text"
-            flat
-          >
-            <v-toolbar-title>تعديل موضوع</v-toolbar-title>
-          </v-toolbar>
           <v-card-text>
             <form enctype="multipart/form-data">
               <v-row>
@@ -60,15 +54,14 @@
         </v-card>
         <v-card-actions class="mt-4">
           <v-btn
-            large
-            color="green darken-1 white--text"
+            large depressed
             :disabled="updateArticleValidator"
             @click="updateArticle"
           >نشر</v-btn>
           <v-btn
-            large
+            large depressed
+            class="mr-2"
             @click="compiledMarkdown()"
-            color="green darken-1 white--text mr-2"
           >معاينة</v-btn>
         </v-card-actions> 
       </v-col>
@@ -79,7 +72,7 @@
           <v-card-text>
             <v-btn
               @click="deleteImage"
-              color="green darken-1 white--text"
+              large depressed
             >حذف
             </v-btn>
           </v-card-text>
@@ -125,14 +118,14 @@ export default {
     return {
       topics: [],
       article: {
-        id: '',
-        title: '',
-        tags: '',
-        body: '',
-        topic: '',
-        image: ''
+        id: null,
+        title: null,
+        tags: null,
+        body: null,
+        topic: null,
+        image: null
       },
-      compiledMarkdownBody: ''
+      compiledMarkdownBody: null
     }
   },
   computed: {
@@ -144,7 +137,7 @@ export default {
     async deleteImage () {
       try {
         let response = await this.$axios.$post(`/article/${this.article.id}/image`, {'action': 'delete'});
-        this.article.image = ''
+        this.article.image = null
       } catch (e) {
         console.log(e);
       }
