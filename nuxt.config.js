@@ -2,11 +2,12 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   mode: 'universal',
+  loading: false,
   /*
   ** Headers of the page
   */
   head: {
-    titleTemplate: 'الموسوعة العربية - %s',
+    titleTemplate: '%s - مقال',
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
@@ -61,7 +62,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true
+      dark: false
     }
   },
   /*

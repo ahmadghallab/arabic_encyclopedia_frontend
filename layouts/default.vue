@@ -1,23 +1,46 @@
 <template>
   <v-app>
-    <v-app-bar flat app>
-      <div class="flex-grow-1"></div>
-      <v-toolbar-title class="font-weight-bold">
-        <!-- <nuxt-link to="/" class="font-weight-bold text-top"> -->
+    <v-app-bar dark flat color="purple accent-1" app>
+      <v-app-bar-nav-icon to="/topic"></v-app-bar-nav-icon>
+      <v-toolbar-title>
+        <nuxt-link to="/" class="font-weight-bold text-top">
           {{ logo }}
-        <!-- </nuxt-link> -->
+        </nuxt-link>
       </v-toolbar-title>
-      <div class="flex-grow-1"></div>
-      <!-- <v-toolbar-items>
-        <v-switch v-model="$vuetify.theme.dark" label="الوضع الليلي"></v-switch>
-      </v-toolbar-items> -->
+      <v-spacer></v-spacer>
+      <v-btn icon @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+        <v-icon v-if="$vuetify.theme.dark">mdi-brightness-4</v-icon>
+        <v-icon v-else>mdi-brightness-7</v-icon>
+      </v-btn>
+      <v-menu v-if="isAuthenticated"
+        transition="slide-y-transition"
+        bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            dark
+            icon
+            v-on="on"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item :to="'/user/'+userId">
+            <v-list-item-title>صفحتي</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/article/post">
+            <v-list-item-title>إضافة مقال</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="logout">
+            <v-list-item-title>خروج</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-content>
-    <v-footer
+    <div
       class="py-2"
     >
       <v-container>
@@ -31,49 +54,19 @@
               حقوق الطبع محفوظة {{ logo }} - {{ new Date().getFullYear() }}
             </v-subheader>
           </v-col>
-          <v-col class="text-left">
-            <span v-if="isAuthenticated">
-              <v-btn 
-                depressed large
-                to="/article/post">مقال جديد
-              </v-btn>
-              <v-btn 
-                depressed large
-                class="mr-1"
-                to="/topic">الموضوعات
-              </v-btn>
-              <v-btn
-                depressed large
-                class="mr-1" @click="logout">خروج
-              </v-btn>
-            </span>
-            <span v-else>
-              <v-btn 
-                depressed large
-                to="/user/signin">دخول
-              </v-btn>
-              <v-btn 
-                depressed large
-                to="/user/register">تسجيل
-              </v-btn>
-            </span>
-            <v-chip large>
-            <v-switch v-model="$vuetify.theme.dark" label="وضع ليلي"></v-switch>
-            </v-chip>
-          </v-col>
         </v-row>
       </v-container>
-    </v-footer>
+    </div>
   </v-app>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {
   data: () => ({
-    logo: 'مقــــال'
+    logo: 'مقال'
   }),
   computed: {
-    ...mapGetters(['isAuthenticated'])
+    ...mapGetters(['isAuthenticated', 'userId'])
   },
   methods: {
     ...mapActions({
@@ -87,10 +80,6 @@ export default {
     toggleTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
     }
-  },
-  created() {
-    console.log(this.$vuetify.theme.dark);
-    
   }
 }
 </script>
@@ -111,15 +100,13 @@ export default {
     direction: rtl;
     font-family: 'HelveticaNeue', sans-serif !important;
   }
-  a {
+  .v-application a {
+    color: inherit !important;
     text-decoration: none;
   }
-  a:hover {
-    opacity: 0.9;
-  }
-  .v-textarea textarea, .v-application, .v-card__subtitle, .v-card__text {
-    line-height: initial;
-    font-size: 1.2rem;
+  .v-application, .v-card__subtitle, .v-card__text {
+    line-height: 1.6;
+    font-size: 1.1rem;
   }
   .theme--light.v-card.v-card--outlined, .theme--dark.v-card.v-card--outlined {
     border: 0;
@@ -149,45 +136,53 @@ export default {
   }
   ul li::before {
     content: "\2022";
-    /* color: #2ce080; */
+    color: #EA80FC;
     font-weight: bold;
     display: inline-block; 
     width: 1em;
     margin-right: -1em;
   }
-  /* .theme--light.v-application {
-    background-color: #f7f8fa;
+  .secondary-color {
+    color: #F50057;
   }
-  .v-application--is-ltr .v-list-item__avatar:first-child {
-    margin-left: 24px;
-    margin-right: 0;
+  .content, .v-textarea textarea {
+    line-height: 2;
   }
-  .v-list-item__title, .v-list-item__subtitle {
-    overflow: initial;
+  .v-subheader {
+    height: initial;
+    padding: 0;
+    font-size: 0.9rem;
   }
-  .article_title {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  .v-card__text {
-    color: #000 !important;
+  .v-application--is-ltr .v-skeleton-loader__article .v-skeleton-loader__heading {
+    margin-right: 16px;
   }
   .v-toolbar__title a {
     color: #fff !important;
-  }
-  .line-height-18 {
-    line-height: 1.8;
+    padding-right: 20px;
   }
   .text-top {
     vertical-align: text-top;
   }
-  .v-input .v-label {
-    line-height: 1;
-    left: initial !important;
-    right: 0;
+  .v-messages__wrapper {
+    text-align: right;
   }
-  .v-text-field input {
+  .v-input__slot {
+    margin-bottom: 0;
+  }
+  .v-list-item .v-list-item__title, .v-list-item .v-list-item__subtitle, .v-text-field input {
     line-height: initial;
   }
-   */
+  .v-select__selection--comma {
+    overflow: initial;
+  }
+  .v-footer {
+    padding: 0;
+  }
+  .v-toolbar__content, .v-toolbar__extension {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .purple-accent-1, a {
+    color: #EA80FC;
+  }
 </style>

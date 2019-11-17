@@ -7,43 +7,44 @@
           dark>
           بيانات الدخول غير صحيحة
         </v-alert>
-        <v-card
-          outlined
-        >
-          <v-card-text>
-            <form v-on:submit.prevent="signin()">
-              <v-row>
-                <v-col
-                  class="py-0"
-                  md="12"
-                >
-                  <v-text-field
-                    placeholder="البريد الالكتروني"
-                    v-model="email"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  class="py-0"
-                  md="12"
-                >
-                  <v-text-field
-                    placeholder="كلمة المرور"
-                    v-model="password"
-                    type="password"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-card-actions>
-                <v-btn
-                  type="submit"
-                  large
-                  color="deep-purple accent-4 white--text"
-                  :disabled="loginValidator || loggingIn"
-                >دخول</v-btn>
-              </v-card-actions>  
-            </form>
-          </v-card-text>
-        </v-card>
+        <div>
+          <form v-on:submit.prevent="signin()">
+            <v-row>
+              <v-col
+                class="py-0"
+                md="12"
+              >
+                <v-text-field
+                  placeholder="البريد الالكتروني"
+                  v-model="email"
+                  hint="اسم المستخدم او الدخول الخاص بك"
+                  persistent-hint
+                ></v-text-field>
+              </v-col>
+              <v-col
+                class="py-0"
+                md="12"
+              >
+                <v-text-field
+                  placeholder="كلمة المرور"
+                  v-model="password"
+                  type="password"
+                  hint="كلمة السر الخاصة بك"
+                  persistent-hint
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-card-actions>
+              <v-btn
+                type="submit"
+                large
+                :loading="loggingIn"
+                color="deep-purple accent-4 white--text"
+                :disabled="loginValidator || loggingIn"
+              >دخول</v-btn>
+            </v-card-actions>  
+          </form>
+        </div>
       </v-col>
     </v-row>
   </v-container>
