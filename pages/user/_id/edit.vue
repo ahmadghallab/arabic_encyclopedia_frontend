@@ -62,9 +62,9 @@
           </v-row>
           <div class="mt-4">
             <v-btn
-              large depressed
+              large depressed tile
               color="deep-purple accent-4 white--text"
-              :disabled="updateUserValidator"
+              :disabled="updateUserValidator || saving"
               :loading="saving"
               @click="updateUser"
             >حفظ</v-btn>

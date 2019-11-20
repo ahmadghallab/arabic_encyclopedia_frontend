@@ -1,78 +1,93 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col md="4">
+      <v-col md="6">
         <v-alert v-if="userNotRegistered" border="left"
           color="pink darken-1"
           dark>
           عذرا عملية التسجيل لم تتم
         </v-alert>
-        <v-card
-          outlined
-        >
-          
-          <v-card-text>
-            <form v-on:submit.prevent="register()">
-              <v-row>
-                <v-col
-                  class="py-0"
-                  md="6"
-                >
-                  <v-text-field
-                    placeholder="الاسم الاول"
-                    v-model="user.first_name"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  class="py-0"
-                  md="6"
-                >
-                  <v-text-field
-                    placeholder="اسم العائلة"
-                    v-model="user.last_name"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  class="py-0"
-                  md="12"
-                >
-                  <v-text-field
-                    placeholder="البريد الالكتروني"
-                    v-model="user.email"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  class="py-0"
-                  md="12"
-                >
-                  <v-text-field
-                    placeholder="كلمة المرور"
-                    v-model="user.password"
-                    type="password"
-                  ></v-text-field>
-                </v-col>
-                <v-col
-                  class="py-0"
-                  md="12"
-                >
-                  <v-text-field
-                    placeholder="تأكيد كلمة المرور"
-                    v-model="passwordConform"
-                    type="password"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-card-actions>
-                <v-btn
-                  type="submit"
-                  large
-                  color="deep-purple accent-4 white--text"
-                  :disabled="registerValidator || registering"
-                >تسجيل</v-btn>
-              </v-card-actions>  
-            </form>
-          </v-card-text>
-        </v-card>
+        <form v-on:submit.prevent="register()">
+          <v-row>
+            <v-col
+              class="py-0"
+              cols="6" 
+            >
+              <v-text-field
+                placeholder="الاسم الاول"
+                v-model="user.first_name"
+                hint="اسمك او اسمك واسم والدك"
+                persistent-hint
+              ></v-text-field>
+            </v-col>
+            <v-col
+              class="py-0"
+              cols="6"
+            >
+              <v-text-field
+                placeholder="اسم العائلة"
+                v-model="user.last_name"
+                hint="اسم الجد او اللقب"
+                persistent-hint
+              ></v-text-field>
+            </v-col>
+            <v-col
+              class="py-0"
+              cols="12"
+            >
+              <v-text-field
+                placeholder="البريد الالكتروني"
+                v-model="user.email"
+                hint="البريد الالكتروني"
+                persistent-hint
+              ></v-text-field>
+            </v-col>
+            <v-col
+              class="py-0"
+              cols="12" 
+            >
+              <v-text-field
+                placeholder="المؤهل"
+                hint="المؤهل او الخبرات العملية"
+                persistent-hint
+                v-model="user.title"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              class="py-0"
+              cols="12"
+            >
+              <v-text-field
+                placeholder="كلمة المرور"
+                v-model="user.password"
+                hint="استخدم حروف وارقام باللغة الانجليزية"
+                persistent-hint
+                type="password"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              class="py-0"
+              cols="12"
+            >
+              <v-text-field
+                placeholder="تأكيد كلمة المرور"
+                v-model="passwordConform"
+                hint="استخدم حروف وارقام باللغة الانجليزية"
+                persistent-hint
+                type="password"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <div class="mt-4">
+            <v-btn
+              type="submit"
+              large depressed tile
+              color="deep-purple accent-4 white--text"
+              :loading="registering"
+              :disabled="registerValidator || registering"
+            >تسجيل</v-btn>
+          </div>  
+        </form>
       </v-col>
     </v-row>
   </v-container>
@@ -87,6 +102,7 @@ export default {
         first_name: null,
         last_name: null,
         email: null,
+        title: null,
         password: null
       },
       passwordConfirm: null,

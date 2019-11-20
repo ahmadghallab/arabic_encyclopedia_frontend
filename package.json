@@ -14,8 +14,8 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
     "cookie-universal-nuxt": "^2.0.18",
-    "nuxt": "^2.0.0",
-    "snarkdown": "^1.2.2"
+    "marked": "^0.7.0",
+    "nuxt": "^2.0.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0"

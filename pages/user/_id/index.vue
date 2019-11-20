@@ -38,7 +38,12 @@
                   {{ user.first_name + ' ' + user.last_name }}
                 </h3>
                 <v-subheader>
-                  {{ user.title }}
+                  <span v-if="user.title">
+                    {{ user.title }}
+                  </span>
+                  <span v-else>
+                    محرر محتوي بموقع موضوع
+                  </span>
                 </v-subheader>
               </div>
             </div>

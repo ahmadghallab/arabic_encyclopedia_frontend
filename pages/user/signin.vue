@@ -34,15 +34,15 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            <v-card-actions>
+            <div class="mt-4">
               <v-btn
                 type="submit"
-                large
+                large depressed tile
                 :loading="loggingIn"
                 color="deep-purple accent-4 white--text"
                 :disabled="loginValidator || loggingIn"
               >دخول</v-btn>
-            </v-card-actions>  
+            </div>  
           </form>
         </div>
       </v-col>

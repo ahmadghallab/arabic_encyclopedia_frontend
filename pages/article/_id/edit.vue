@@ -1,26 +1,25 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col md="6">
+      <v-col md="8">
         <div class="mb-4" v-if="article.image">
-          <v-img  :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="250px">
+          <v-img  :src="'http://www.ma8al.com/api/v1/article/image/'+article.image" height="300px">
             <template v-slot:placeholder>
               <v-row
                 class="fill-height ma-0"
                 align="center"
                 justify="center"
               >
-                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                <v-progress-circular indeterminate color="purple accent-1"></v-progress-circular>
               </v-row>
             </template>
           </v-img>
           <v-btn
             class="mt-4"
             @click="deleteImage"
-            depressed
-            color="deep-purple accent-4 white--text"
+            depressed large tile
             :loading="deleting"
-          >حذف
+          >حذف الصورة
           </v-btn>
         </div>
         <div class="mb-4" v-else>
@@ -36,6 +35,12 @@
         <v-overlay :value="uploading">
           <v-progress-circular indeterminate size="64"></v-progress-circular>
         </v-overlay>
+        <div class="d-flex flex-no-wrap align-center mt-4 py-1">
+          <v-subheader class="font-weight-bold pl-4 mb-2">
+            تعديل المحتوي
+          </v-subheader>
+          <v-divider></v-divider>
+        </div>
         <form>
           <v-row>
             <v-col
@@ -55,10 +60,9 @@
             >
               <v-select
                 :items="topics"
-                v-model="article.topic"
+                v-model="articleTopic"
                 item-text="title"
                 item-value="id"
-                placeholder="الموضوعات"
                 hint="اختار موضوع هذا المقال"
                 persistent-hint
               ></v-select>
@@ -113,26 +117,29 @@
           </v-row> 
           <div class="mt-4 pt-2">
             <v-btn
-              large depressed
-              color="deep-purple accent-4 white--text"
+              large depressed tile
+              color="purple accent-1 white--text"
               :disabled="updateArticleValidator"
               :loading="saving"
               @click="updateArticle"
+              class="ml-2"
             >نشر</v-btn>
-            <v-dialog v-model="dialog" max-width="600px">
+            <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
               <template v-slot:activator="{ on }">
-                <v-btn :disabled="!article.body" large depressed 
+                <v-btn :disabled="!article.body" large depressed tile 
                   @click="compiledMarkdown()" v-on="on">معاينة المحتوي</v-btn>
               </template>
               <v-card>
-                <v-card-title>
-                  <h3 class="article_title">
-                    {{ article.title }}
-                  </h3>
-                </v-card-title>
-                <v-card-text>
-                  <div class="content" v-html="compiledMarkdownBody"></div>
-                </v-card-text>
+                <v-row justify="center">
+                  <v-col
+                    cols="12"
+                    sm="8"
+                    >
+                    <div class="content" v-html="compiledMarkdownBody"></div>
+                    <v-btn large depressed tile class="my-4"
+                      @click="dialog = false">تمت المعاينة</v-btn>
+                  </v-col>
+                </v-row>
               </v-card>
             </v-dialog>
           </div> 
@@ -142,12 +149,12 @@
   </v-container>
 </template>
 <script>
-import snarkdown from 'snarkdown';
+import * as marked from 'marked'
 
 export default {
   head () {
     return {
-      title: 'إنشاء موضوع'
+      title: 'تعديل مقال'
     }
   },
   async asyncData({ $axios, params }) {
@@ -176,6 +183,9 @@ export default {
   computed: {
     updateArticleValidator () {
       return (this.article.title && this.article.body && !this.saving) ? false : true
+    },
+    articleTopic() {
+      return parseInt(this.article.topic)
     }
   },
   methods: {
@@ -187,7 +197,7 @@ export default {
         this.deleting = false
       } catch (e) {
         console.log(e);
-      }
+      } 
     },
     async uploadImage(event) {
       this.uploading = true
@@ -205,16 +215,16 @@ export default {
       }
     },
     compiledMarkdown () {
-      this.compiledMarkdownBody = snarkdown(this.article.body)
+      this.compiledMarkdownBody = marked(this.article.body)
     },
     onFileChange(event) {
       this.uploadImage(event)
     },
-    async updateArticle() {  
+    async updateArticle() {
       this.saving = true    
       try {
         let response = await this.$axios.$patch(`/article/${this.article.id}`, this.article);
-        this.$router.push("/article/"+this.article.id);
+        this.$router.push(`/${response.article_id}-${response.article_slug}`);
       } catch (e) {
         console.log(e);
       }

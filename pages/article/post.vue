@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col md="6">
+      <v-col md="8">
         <form>
           <v-row>
             <v-col
@@ -80,26 +80,28 @@
           <div class="mt-4 pt-2">
             <v-btn
               @click="postArticle"
-              large depressed
-              color="deep-purple accent-4 white--text"
+              large depressed tile
+              color="purple accent-1 white--text"
               :disabled="postArticleValidator"
               :loading="saving"
+              class="ml-2"
             >نشر</v-btn>
-            <v-dialog v-model="dialog" max-width="600px">
+             <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
               <template v-slot:activator="{ on }">
-                <v-btn large depressed
-                  :disabled="!article.body" 
+                <v-btn :disabled="!article.body" large depressed tile 
                   @click="compiledMarkdown()" v-on="on">معاينة المحتوي</v-btn>
               </template>
               <v-card>
-                <v-card-title>
-                  <h3 class="article_title">
-                    {{ article.title }}
-                  </h3>
-                </v-card-title>
-                <v-card-text>
-                  <div class="content" v-html="compiledMarkdownBody"></div>
-                </v-card-text>
+                <v-row justify="center">
+                  <v-col
+                    cols="12"
+                    sm="8"
+                    >
+                    <div class="content" v-html="compiledMarkdownBody"></div>
+                    <v-btn large depressed tile class="my-4"
+                      @click="dialog = false">تمت المعاينة</v-btn>
+                  </v-col>
+                </v-row>
               </v-card>
             </v-dialog>
           </div>
@@ -109,7 +111,7 @@
   </v-container>
 </template>
 <script>
-import snarkdown from 'snarkdown';
+import * as marked from 'marked'
 
 export default {
   head () {
@@ -151,13 +153,13 @@ export default {
   },
   methods: {
     compiledMarkdown () {
-      this.compiledMarkdownBody = snarkdown(this.article.body)
+      this.compiledMarkdownBody = marked(this.article.body)
     },
     async postArticle() {
       this.saving = true
       try {
         let response = await this.$axios.$post("/articles", this.article);
-        this.$router.push("/article/" + response.article_id);
+        this.$router.push("/article/" + response.article_id + "/edit");
       } catch (e) {
         console.log(e);
       }

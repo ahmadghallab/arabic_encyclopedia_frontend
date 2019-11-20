@@ -34,7 +34,7 @@
                     align="center"
                     justify="center"
                   >
-                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                    <v-progress-circular indeterminate color="purple accent-1"></v-progress-circular>
                   </v-row>
                 </template>
               </v-img>
@@ -47,7 +47,12 @@
                 {{ article.user.first_name + ' ' + article.user.last_name }}
               </p>
               <v-subheader>
-                {{ article.user.title }}
+                <span v-if="article.user.title">
+                  {{ article.user.title }}
+                </span>
+                <span v-else>
+                  محرر محتوي بموقع مقال
+                </span>
               </v-subheader>
             </div>
           </div>
@@ -56,14 +61,14 @@
           </p>
           <div v-if="article.image" class="mb-4 py-4">
             <v-img 
-              :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="350px">
+              :src="'http://www.ma8al.com/api/v1/article/image/'+article.image" height="350px">
               <template v-slot:placeholder>
                 <v-row
                   class="fill-height ma-0"
                   align="center"
                   justify="center"
                 >
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                  <v-progress-circular indeterminate color="purple accent-1"></v-progress-circular>
                 </v-row>
               </template>
             </v-img>
@@ -83,13 +88,13 @@
         <v-col col="12" sm="10">
           <v-card-actions v-if="isAuthenticated">
             <v-btn
-              depressed large
+              depressed large tile
               color="purple accent-1 white--text"
               :to="`/article/${article.id}/edit`"
             >تعديل</v-btn>
             <v-btn
-              text large
-              class="mr-2"
+              depressed large tile
+              class="mr-3"
               @click="dialog = true"
             >حذف</v-btn>
             <v-dialog
@@ -148,10 +153,10 @@
             <v-row>
               <v-col col="12" md="4" sm="6" v-for="article in relatedArticles" :key="'relatedArticle_'+article.id">
                 <nuxt-link
-                  :to="`/article/${article.id}`">
+                  :to="`/${article.id}-${article.slug}`">
                   <div>
                     <v-img v-if="article.image" 
-                      :src="'http://127.0.0.1:8000/api/v1/article/image/'+article.image" height="170px" class="mb-2">
+                      :src="'http://www.ma8al.com/api/v1/article/image/'+article.image" height="170px" class="mb-2">
                       <template v-slot:placeholder>
                         <v-row
                           class="fill-height ma-0"
@@ -175,7 +180,7 @@
   </div>
 </template>
 <script>
-import snarkdown from 'snarkdown';
+import * as marked from 'marked'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -186,7 +191,8 @@ export default {
   },
   async asyncData({ $axios, params }) {
     try {
-      const article = await $axios.$get(`/article/${params.id}/withrelated`)
+      const articleId = params.slug.split('-')[0]
+      const article = await $axios.$get(`/article/${articleId}/withrelated`)
       return { 
         article: article.article, 
         relatedArticles: article.related_articles,
@@ -219,7 +225,7 @@ export default {
       }
     },
     compiledMarkdown (text) {
-      return snarkdown(text)
+      return marked(text)
     },
     formatDate(date) {
       const d = new Date(date)
