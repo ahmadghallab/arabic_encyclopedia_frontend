@@ -1,17 +1,7 @@
 <template>
   <div>
     <v-container>
-      <v-row justify="center" v-if="loading">
-        <v-col col="12" sm="10">
-          <div class="my-4 py-4" v-for="i in [1,2,3]" :key="i">
-            <v-skeleton-loader
-              type="paragraph"
-            >
-            </v-skeleton-loader>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row justify="center" v-else>
+      <v-row justify="center">
         <v-col
           cols="12"
           sm="10"
@@ -86,17 +76,21 @@
       </v-row>
       <v-row justify="center" v-if="!loading">
         <v-col col="12" sm="10">
-          <v-card-actions v-if="isAuthenticated">
-            <v-btn
-              depressed large tile
-              color="purple accent-1 white--text"
+          <div v-if="isAuthenticated">
+            <v-btn 
               :to="`/article/${article.id}/edit`"
-            >تعديل</v-btn>
+              depressed dark fab 
+              color="deep-purple accent-4 white--text">
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
             <v-btn
-              depressed large tile
-              class="mr-3"
+              depressed dark fab 
+              color="pink lighten-2 white--text"
+              class="mr-2"
               @click="dialog = true"
-            >حذف</v-btn>
+            >
+            <v-icon>mdi-delete</v-icon>
+            </v-btn>
             <v-dialog
               v-model="dialog"
               max-width="350"
@@ -128,26 +122,13 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-card-actions>
+          </div>
         </v-col>
       </v-row>
     </v-container>
     <v-footer class="py-4" v-if="relatedArticles.length">
       <div class="container">
-        <v-row justify="center" v-if="loading">
-          <v-col col="12" sm="10">
-            <v-row>
-              <v-col col="12" md="4" sm="6" v-for="i in [1,2,3]" :key="i">
-                <v-skeleton-loader
-                  type="paragraph"
-                  class="my-4"
-                >
-                </v-skeleton-loader>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-        <v-row justify="center" v-else>
+        <v-row justify="center">
           <v-col col="12" sm="10">
             <v-subheader class="text-top ml-4 font-weight-bold mb-2">مقالات ذات صلة</v-subheader>
             <v-row>
@@ -195,8 +176,7 @@ export default {
       const article = await $axios.$get(`/article/${articleId}/withrelated`)
       return { 
         article: article.article, 
-        relatedArticles: article.related_articles,
-        loading: false 
+        relatedArticles: article.related_articles
       }
     } catch (e) {
       return { article: [], relatedArticles: [] }
@@ -204,7 +184,6 @@ export default {
   },
   data () {
     return {
-      loading: true,
       deleting: false,
       dialog: false,
       article: [],

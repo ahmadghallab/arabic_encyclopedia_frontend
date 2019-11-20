@@ -2,16 +2,7 @@
   <div>
     <v-footer class="pt-4 mb-4">
       <div class="container">
-        <v-row v-if="loading">
-          <v-col col="12" md="4" sm="6" v-for="i in [1,2,3]" :key="i">
-            <v-skeleton-loader
-              type="paragraph"
-              class="py-4 my-4"
-            >
-            </v-skeleton-loader>
-          </v-col>
-        </v-row>
-        <v-row v-else>
+        <v-row>
           <v-col col="12" md="4" sm="6">
             <div class="d-flex flex-no-wrap align-center my-4">
               <v-avatar class="ml-4" size="62" v-if="user.profile_photo">
@@ -52,16 +43,7 @@
       </div>
     </v-footer>
     <v-container>
-      <v-row justify="center" v-if="loading">
-        <v-col col="12" md="4" sm="6" v-for="i in [1,2,3]" :key="i">
-          <v-skeleton-loader
-            class="py-4 my-4"
-            type="paragraph"
-          >
-          </v-skeleton-loader>
-        </v-col>
-      </v-row>
-      <v-row v-else>
+      <v-row justify="center">
         <v-col col="12" md="4" sm="6">
           <v-subheader>
             لا يوجد مقالات حاليا
@@ -70,7 +52,7 @@
       </v-row>
       <v-btn
         class="mt-3"
-        depressed large
+        depressed large tile
         color="purple accent-1 white--text"
         :to="`/user/${user.id}/edit`"
       >تعديل</v-btn>
@@ -88,8 +70,7 @@ export default {
     try {
       const user = await $axios.$get(`/user/${params.id}`)
       return { 
-        user: user,
-        loading: false 
+        user: user
       }
     } catch (e) {
       return { user: [] }
@@ -97,7 +78,6 @@ export default {
   },
   data () {
     return {
-      loading: true,
       user: []
     }
   },

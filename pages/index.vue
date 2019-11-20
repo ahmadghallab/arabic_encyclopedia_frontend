@@ -1,15 +1,6 @@
 <template>
   <v-container class="mt-4">
-    <v-row justify="center" v-if="loading">
-      <v-col col="12" md="4" sm="6" v-for="i in [1,2,3]" :key="i">
-        <v-skeleton-loader
-          class="py-4 my-4"
-          type="paragraph"
-        >
-        </v-skeleton-loader>
-      </v-col>
-    </v-row>
-    <v-row v-else>
+    <v-row>
       <v-col col="12" md="4" sm="6" v-for="article in articles" :key="'ordrArticle_'+article.id">
         <nuxt-link
           :to="`/${article.id}-${article.slug}`">
@@ -72,8 +63,7 @@ export default {
       return {
         articles: articles.data,
         currentPage: articles.current_page ,
-        lastPage: articles.last_page,
-        loading: false
+        lastPage: articles.last_page
       }
     } catch (e) {
       return { articles: [] }
@@ -81,7 +71,6 @@ export default {
   },
   data () {
     return {
-      loading: true,
       currentPage: null,
       lastPage: null,
       articles: []

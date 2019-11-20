@@ -18,15 +18,11 @@
               </v-subheader>
             </v-card-text>
             <v-card-actions v-if="isAuthenticated">
-              <!-- <v-btn :to="'/topic/'+topic.id+'/edit'" icon>
+              <v-btn 
+                :to="'/topic/'+topic.id+'/edit'" 
+                depressed small dark fab 
+                color="deep-purple accent-4 white--text">
                 <v-icon>mdi-pencil</v-icon>
-              </v-btn> -->
-              <v-btn
-                depressed
-                text
-                :to="'/topic/'+topic.id+'/edit'"
-              >
-                تعديل
               </v-btn>
             </v-card-actions>
           </div>
