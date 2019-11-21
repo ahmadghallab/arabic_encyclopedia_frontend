@@ -50,7 +50,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: { 
-    baseURL: 'http://api.ma8al.com/v1'
+    baseURL: 'https://www.ma8al.com/api/v1'
   },
   /*
   ** vuetify module configuration
