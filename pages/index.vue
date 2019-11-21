@@ -6,7 +6,7 @@
           :to="`/${article.id}-${article.slug}`">
           <div class="mb-4">
             <v-img v-if="article.image" 
-              :src="'http://www.ma8al.com/api/v1/article/image/'+article.image"
+              :src="'https://www.ma8al.com/api/v1/article/image/'+article.image"
               height="180px">
               <template v-slot:placeholder>
                 <v-row

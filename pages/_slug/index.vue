@@ -51,7 +51,7 @@
           </p>
           <div v-if="article.image" class="mb-4 py-4">
             <v-img 
-              :src="'http://www.ma8al.com/api/v1/article/image/'+article.image" height="350px">
+              :src="'https://www.ma8al.com/api/v1/article/image/'+article.image" height="350px">
               <template v-slot:placeholder>
                 <v-row
                   class="fill-height ma-0"
@@ -74,7 +74,7 @@
           </div>
         </v-col>
       </v-row>
-      <v-row justify="center" v-if="!loading">
+      <v-row justify="center">
         <v-col col="12" sm="10">
           <div v-if="isAuthenticated">
             <v-btn 
@@ -137,7 +137,7 @@
                   :to="`/${article.id}-${article.slug}`">
                   <div>
                     <v-img v-if="article.image" 
-                      :src="'http://www.ma8al.com/api/v1/article/image/'+article.image" height="170px" class="mb-2">
+                      :src="'https://www.ma8al.com/api/v1/article/image/'+article.image" height="170px" class="mb-2">
                       <template v-slot:placeholder>
                         <v-row
                           class="fill-height ma-0"
