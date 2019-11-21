@@ -2,18 +2,18 @@
   <v-container>
     <v-row justify="center">
       <v-col md="6">
-        <v-card outlined class="mb-4" v-for="topic in topics" :key="topic.name">
+        <v-card flat class="mb-4" v-for="topic in topics" :key="topic.name">
           <div class="d-flex flex-no-wrap justify-space-between">
             <v-card-text>
               <h3 class="article_title">
                 {{ topic.title }}
               </h3>
               <v-subheader class="mt-1">
-                <span v-if="topic.articles_count">
-                  {{ topic.articles_count }} مقال
+                <span v-if="topic.articles_count == 0">
+                  لا يوجد مقالات لهذا الموضوع
                 </span>
                 <span v-else>
-                  لا يوجد مقالات لهذا الموضوع
+                  {{ topic.articles_count }} مقال
                 </span>
               </v-subheader>
             </v-card-text>

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar dark flat color="purple accent-1" app>
+    <v-app-bar dark flat color="deep-purple accent-4" app>
       <v-app-bar-nav-icon to="/topic"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <nuxt-link to="/" class="font-weight-bold text-top">
@@ -146,7 +146,7 @@ export default {
     color: #F50057;
   }
   .content, .v-textarea textarea {
-    line-height: 2;
+    line-height: 2 !important;
   }
   .v-subheader {
     height: initial;

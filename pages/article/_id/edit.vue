@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col md="8">
         <div class="mb-4" v-if="article.image">
-          <v-img  :src="'https://www.ma8al.com/api/v1/article/image/'+article.image" height="300px">
+          <v-img  :src="'http://api.ma8al.com/v1/article/image/'+article.image" height="300px">
             <template v-slot:placeholder>
               <v-row
                 class="fill-height ma-0"

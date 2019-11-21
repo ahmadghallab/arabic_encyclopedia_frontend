@@ -1,14 +1,15 @@
 {
-  "name": "arabic_encyclopedia_frontend",
+  "name": "ma8al.com",
   "version": "1.0.0",
-  "description": "Arabic Encyclopedia Frontend App",
+  "description": "Arabic Encyclopedia",
   "author": "Ahmad Ghallab",
   "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "heroku-postbuild": "nuxt build"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",

@@ -51,7 +51,7 @@
           </p>
           <div v-if="article.image" class="mb-4 py-4">
             <v-img 
-              :src="'https://www.ma8al.com/api/v1/article/image/'+article.image" height="350px">
+              :src="'http://api.ma8al.com/v1/article/image/'+article.image" height="350px">
               <template v-slot:placeholder>
                 <v-row
                   class="fill-height ma-0"
@@ -137,7 +137,7 @@
                   :to="`/${article.id}-${article.slug}`">
                   <div>
                     <v-img v-if="article.image" 
-                      :src="'https://www.ma8al.com/api/v1/article/image/'+article.image" height="170px" class="mb-2">
+                      :src="'http://api.ma8al.com/v1/article/image/'+article.image" height="170px" class="mb-2">
                       <template v-slot:placeholder>
                         <v-row
                           class="fill-height ma-0"
